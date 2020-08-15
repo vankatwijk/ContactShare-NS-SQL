@@ -69,6 +69,7 @@ export default new Vuex.Store({
   actions: {
     init(context) {
       (new Sqlite("coronaapp.db")).then(async db =>  {
+          
           await db.execSQL("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, firstname TEXT, lastname TEXT, street TEXT, zip TEXT, country TEXT, phone TEXT, email TEXT)").then(id => {
               //context.commit("init", { database: db });
               console.log("USERS LIST");
@@ -107,7 +108,7 @@ export default new Vuex.Store({
         });
     },
     insertScan(context, data) {
-      context.state.database.execSQL("INSERT INTO scans (title, data, timestamp) VALUES (?, ?, ?)", 
+      context.state.database.execSQL("INSERT INTO scans (firstname, lastname, street, zip, country, phone, email) VALUES (?, ?, ?, ?, ?, ?, ?)", 
       [data.title, data.data, data.timestamp]).then(id => {
           context.commit("saveScans", { data: data });
           console.log("INSERT scan", data);
